@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kanji JFTA2 IG:iwan_kurniawan201298 - 60 Soal (Dengan Nilai & Tampilan Menarik)</title>
+  <style>
+    /* Reset dan font */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #eef2f7;
+      margin: 0; padding: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: flex-start;
+      padding: 30px 15px;
+      color: #333;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 720px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      padding: 30px 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #004d99;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    #progress {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+      text-align: right;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .question {
+      font-weight: 700;
+      font-size: 20px;
+      margin-bottom: 20px;
+      line-height: 1.3;
+      color: #222;
+      min-height: 60px;
+    }
+
+    .answers label {
+      display: block;
+      padding: 12px 18px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 17px;
+      background: #fafafa;
+      user-select: none;
+      box-shadow: inset 0 0 5px #f0f0f0;
+    }
+
+    /* Saat radio dipilih */
+    .answers input[type="radio"]:checked + label {
+      border-color: #2a7ae2;
+      background: #d0e1ff;
+      box-shadow: 0 0 8px #2a7ae2aa;
+      color: #003d99;
+      font-weight: 700;
+    }
+
+    /* Hover efek */
+    .answers label:hover {
+      background: #e4ecff;
+      border-color: #4a90e2;
+      box-shadow: 0 0 6px #4a90e2aa;
+    }
+
+    /* Sembunyikan radio */
+    .answers input[type="radio"] {
+      display: none;
+    }
+
+    #next-btn {
+      display: block;
+      width: 100%;
+      background-color: #2a7ae2;
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 25px;
+      box-shadow: 0 5px 12px #1d55b3aa;
+      user-select: none;
+    }
+
+    #next-btn:hover {
+      background-color: #1857c2;
+      box-shadow: 0 6px 14px #144595cc;
+    }
+
+    #result {
+      background: #fdfdfd;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(42, 122, 226, 0.2);
+      padding: 25px 30px;
+      margin-top: 20px;
+      color: #2a2a2a;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    #result h2 {
+      margin-top: 0;
+      color: #2a7ae2;
+      font-weight: 800;
+      margin-bottom: 15px;
+      text-align: center;
+      letter-spacing: 0.8px;
+    }
+
+    #result p {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .wrong-item {
+      background: #fff4f4;
+      border-left: 6px solid #e25252;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .wrong-item strong {
+      color: #b00000;
+    }
+
+    .wrong-item br {
+      margin-bottom: 6px;
+    }
+
+    #result button {
+      display: block;
+      margin: 0 auto;
+      background-color: #2a7ae2;
+      color: white;
+      border: none;
+      padding: 12px 40px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 5px 12px #1d55b3aa;
+      user-select: none;
+    }
+
+    #result button:hover {
+      background-color: #1857c2;
+      box-shadow: 0 6px 14px #144595cc;
+    }
+
+    /* Responsive */
+    @media(max-width: 480px) {
+      .container {
+        padding: 20px 25px;
+      }
+      .question {
+        font-size: 18px;
+      }
+      .answers label {
+        font-size: 15px;
+        padding: 10px 14px;
+      }
+      #next-btn {
+        font-size: 16px;
+        padding: 13px;
+      }
+      #result p {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kanji JFTA2 IG:iwan_kurniawan201298 - 60 Soal</h1>
+    <div id="progress"></div>
+    <div id="quiz-container"></div>
+    <button id="next-btn">Soal Berikutnya</button>
+    <div id="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      // (Soal sama seperti sebelumnya, saya potong agar tidak terlalu panjang di sini)
+      { question: "1. 『季節』の意味はどれですか？", options: ["Musim", "Hari", "Bulan", "Waktu"], answer: 0 },
+      { question: "2. 『昨日』の意味はどれですか？", options: ["Besok", "Kemarin", "Hari ini", "Nanti"], answer: 1 },
+      { question: "3. 『明日』の意味はどれですか？", options: ["Besok", "Kemarin", "Pagi", "Malam"], answer: 0 },
+      { question: "4. 『食堂』の意味はどれですか？", options: ["Ruang makan", "Dapur", "Kantin", "Restoran"], answer: 2 },
+      { question: "5. 『銀行』の意味はどれですか？", options: ["Bank", "Pasar", "Kantor Pos", "Toko"], answer: 0 },
+      { question: "6. 『受付』の意味はどれですか？", options: ["Resepsionis", "Kasir", "Penjaga pintu", "Pelayan"], answer: 0 },
+      { question: "7. 『門』の意味はどれですか？", options: ["Pintu gerbang", "Pintu rumah", "Jendela", "Tembok"], answer: 0 },
+      { question: "8. 『登ります』の意味はどれですか？", options: ["Mendaki", "Turun", "Berlari", "Melompat"], answer: 0 },
+      { question: "9. 『教科書』の意味はどれですか？", options: ["Buku pelajaran", "Buku cerita", "Buku catatan", "Buku gambar"], answer: 0 },
+      { question: "10. 『教室』の意味はどれですか？", options: ["Ruang kelas", "Ruang guru", "Laboratorium", "Perpustakaan"], answer: 0 },
+      { question: "11. 『参加します』の意味はどれですか？", options: ["Ikut serta", "Mendengarkan", "Membeli", "Mencoba"], answer: 0 },
+      { question: "12. 『用意します』の意味はどれですか？", options: ["Mempersiapkan", "Menghapus", "Mencuci", "Menyapu"], answer: 0 },
+      { question: "13. 『牛肉』の意味はどれですか？", options: ["Daging sapi", "Daging ayam", "Daging babi", "Daging ikan"], answer: 0 },
+      { question: "14. 『豚肉』の意味はどれですか？", options: ["Daging babi", "Daging sapi", "Daging ayam", "Daging ikan"], answer: 0 },
+      { question: "15. 『皿』の意味はどれですか？", options: ["Piring", "Sendok", "Gelas", "Pisau"], answer: 0 },
+      { question: "16. 『お湯』の意味はどれですか？", options: ["Air panas", "Air dingin", "Teh", "Sup"], answer: 0 },
+      { question: "17. 『調理方法』の意味はどれですか？", options: ["Cara memasak", "Resep makanan", "Bumbu dapur", "Peralatan masak"], answer: 0 },
+      { question: "18. 『甘い』の意味はどれですか？", options: ["Manis", "Asin", "Pedas", "Pahit"], answer: 0 },
+      { question: "19. 『辛い』の意味はどれですか？", options: ["Pedas", "Asam", "Manis", "Asin"], answer: 0 },
+      { question: "20. 『数字』の意味はどれですか？", options: ["Angka", "Huruf", "Gambar", "Warna"], answer: 0 },
+      { question: "21. 『机』の意味はどれですか？", options: ["Meja", "Kursi", "Lemari", "Papan tulis"], answer: 0 },
+      { question: "22. 『都合』の意味はどれですか？", options: ["Kondisi", "Jadwal", "Waktu", "Cuaca"], answer: 0 },
+      { question: "23. 『用事』の意味はどれですか？", options: ["Keperluan", "Kegiatan", "Pertemuan", "Tempat"], answer: 0 },
+      { question: "24. 『氏名』の意味はどれですか？", options: ["Nama lengkap", "Alamat", "Nomor HP", "Tanggal lahir"], answer: 0 },
+      { question: "25. 『理由』の意味はどれですか？", options: ["Alasan", "Masalah", "Solusi", "Tujuan"], answer: 0 },
+      { question: "26. 『別に』の意味はどれですか？", options: ["Tidak khusus", "Khusus", "Sebaliknya", "Selanjutnya"], answer: 0 },
+      { question: "27. 『連絡先』の意味はどれですか？", options: ["Kontak", "Alamat", "Nama", "Tanggal"], answer: 0 },
+      { question: "28. 『吸います』の意味はどれですか？", options: ["Menghirup", "Membuang", "Meludah", "Makan"], answer: 0 },
+      { question: "29. 『取ります』の意味はどれですか？", options: ["Mengambil", "Menaruh", "Melempar", "Membeli"], answer: 0 },
+      { question: "30. 『伝えます』の意味はどれですか？", options: ["Menyampaikan", "Menolak", "Menerima", "Mencatat"], answer: 0 },
+      { question: "31. 『熱』の意味はどれですか？", options: ["Demam", "Batuk", "Pusing", "Flu"], answer: 0 },
+      { question: "32. 『薬』の意味はどれですか？", options: ["Obat", "Vitamin", "Suplemen", "Perban"], answer: 0 },
+      { question: "33. 『医者』の意味はどれですか？", options: ["Dokter", "Perawat", "Pasien", "Apoteker"], answer: 0 },
+      { question: "34. 『〜才』の意味はどれですか？", options: ["Umur", "Tinggi badan", "Berat badan", "Golongan darah"], answer: 0 },
+      { question: "35. 『眠い』の意味はどれですか？", options: ["Mengantuk", "Lapar", "Haus", "Pusing"], answer: 0 },
+      { question: "36. 『記入します』の意味はどれですか？", options: ["Mengisi (formulir)", "Membaca", "Menulis ulang", "Mencetak"], answer: 0 },
+      { question: "37. 『顏』の意味はどれですか？", options: ["Wajah", "Tangan", "Kaki", "Perut"], answer: 0 },
+      { question: "38. 『泣きます』の意味はどれですか？", options: ["Menangis", "Tertawa", "Berteriak", "Diam"], answer: 0 },
+      { question: "39. 『会計』の意味はどれですか？", options: ["Kasir", "Penjaga", "Pembeli", "Pelayan"], answer: 0 },
+      { question: "40. 『電話番号』の意味はどれですか？", options: ["Nomor telepon", "Nomor rumah", "Alamat", "Kode pos"], answer: 0 },
+      { question: "41. 『牛乳』の意味はどれですか？", options: ["Susu", "Keju", "Mentega", "Krim"], answer: 0 },
+      { question: "42. 『禁煙』の意味はどれですか？", options: ["Dilarang merokok", "Tempat merokok", "Rokok gratis", "Asbak"], answer: 0 },
+      { question: "43. 『自由』の意味はどれですか？", options: ["Bebas", "Ketat", "Terbatas", "Tertutup"], answer: 0 },
+      { question: "44. 『切ります』の意味はどれですか？", options: ["Memotong", "Menyambung", "Membungkus", "Melempar"], answer: 0 },
+      { question: "45. 『焼きます』の意味はどれですか？", options: ["Memanggang", "Merebus", "Menggoreng", "Merebus dengan api kecil"], answer: 0 },
+      { question: "46. 『旅館』の意味はどれですか？", options: ["Penginapan Jepang", "Hotel mewah", "Losmen", "Asrama"], answer: 0 },
+      { question: "47. 『遊びます』の意味はどれですか？", options: ["Bermain", "Belajar", "Bekerja", "Beristirahat"], answer: 0 },
+      { question: "48. 『調べます』の意味はどれですか？", options: ["Mengecek", "Mencuci", "Memperbaiki", "Membuka"], answer: 0 },
+      { question: "49. 『事故』の意味はどれですか？", options: ["Kecelakaan", "Kemacetan", "Kerusakan", "Kebakaran"], answer: 0 },
+      { question: "50. 『故障』の意味はどれですか？", options: ["Kerusakan", "Pengecekan", "Kecelakaan", "Perbaikan"], answer: 0 },
+      { question: "51. 『指定席』の意味はどれですか？", options: ["Tempat duduk yang dipesan", "Tempat duduk bebas", "Kursi kosong", "Tempat berdiri"], answer: 0 },
+      { question: "52. 『光ります』の意味はどれですか？", options: ["Bersinar", "Padam", "Gelap", "Redup"], answer: 0 },
+      { question: "53. 『お知らせ』の意味はどれですか？", options: ["Pengumuman", "Kejadian", "Cerita", "Tugas"], answer: 0 },
+      { question: "54. 『水道』の意味はどれですか？", options: ["Air ledeng", "Sumur", "Air galon", "Air sungai"], answer: 0 },
+      { question: "55. 『工事』の意味はどれですか？", options: ["Pekerjaan konstruksi", "Gedung baru", "Alat berat", "Bangunan lama"], answer: 0 },
+      { question: "56. 『場合』の意味はどれですか？", options: ["Keadaan", "Pilihan", "Kesempatan", "Tempat"], answer: 0 },
+      { question: "57. 『条件』の意味はどれですか？", options: ["Syarat", "Waktu", "Harga", "Tugas"], answer: 0 },
+      { question: "58. 『開きます』の意味はどれですか？", options: ["Terbuka", "Tertutup", "Masuk", "Keluar"], answer: 0 },
+      { question: "59. 『生産します』の意味はどれですか？", options: ["Memproduksi", "Membeli", "Menghitung", "Memperbaiki"], answer: 0 },
+      { question: "60. 『体験』の意味はどれですか？", options: ["Pengalaman langsung", "Pengamatan", "Pendengaran", "Percobaan"], answer: 0 }
+    ];
+
+    let currentIndex = 0;
+    let userAnswers = [];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextBtn = document.getElementById('next-btn');
+    const progress = document.getElementById('progress');
+    const resultDiv = document.getElementById('result');
+
+    function showQuestion() {
+      const q = quizData[currentIndex];
+      progress.textContent = `Soal ${currentIndex + 1} dari ${quizData.length}`;
+      let html = `<div class="question">${q.question.replace(/\n/g,"<br>")}</div><div class="answers">`;
+      q.options.forEach((opt, i) => {
+        html += `<input type="radio" name="answer" id="ans${i}" value="${i}"><label for="ans${i}">${opt}</label>`;
+      });
+      html += `</div>`;
+      quizContainer.innerHTML = html;
+    }
+
+    function showResult() {
+      const total = quizData.length;
+      let correctCount = 0;
+      let wrongItemsHtml = '';
+
+      userAnswers.forEach((ans, i) => {
+        if (ans === quizData[i].answer) {
+          correctCount++;
+        } else {
+          const q = quizData[i];
+          wrongItemsHtml += `
+            <div class="wrong-item">
+              <strong>Soal ${i+1}:</strong> ${q.question.replace(/\n/g,"<br>")}<br>
+              Jawaban Anda: ${q.options[ans] || '(Tidak menjawab)'}<br>
+              Jawaban Benar: ${q.options[q.answer]}
+            </div>
+          `;
+        }
+      });
+
+      quizContainer.style.display = 'none';
+      nextBtn.style.display = 'none';
+      progress.style.display = 'none';
+
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `
+        <h2>Hasil Latihan</h2>
+        <p>Skor Anda: <strong>${correctCount} / ${total}</strong></p>
+        ${wrongItemsHtml ? `<h3>Soal yang salah:</h3>${wrongItemsHtml}` : '<p>Selamat! Semua jawaban benar.</p>'}
+        <button onclick="restartQuiz()">Coba Lagi</button>
+      `;
+    }
+
+    function restartQuiz() {
+      currentIndex = 0;
+      userAnswers = [];
+      resultDiv.style.display = 'none';
+      quizContainer.style.display = '';
+      nextBtn.style.display = '';
+      progress.style.display = '';
+      showQuestion();
+    }
+
+    nextBtn.addEventListener('click', () => {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      if (!selected) {
+        alert('Silakan pilih jawaban terlebih dahulu!');
+        return;
+      }
+
+      userAnswers[currentIndex] = parseInt(selected.value);
+      currentIndex++;
+
+      if (currentIndex >= quizData.length) {
+        showResult();
+      } else {
+        showQuestion();
+      }
+    });
+
+    showQuestion();
+  </script>
+</body>
+</html>
