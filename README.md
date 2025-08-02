@@ -1,0 +1,2 @@
+# jftkanji
+kanji jft
